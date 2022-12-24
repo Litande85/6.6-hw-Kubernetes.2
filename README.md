@@ -20,31 +20,80 @@
 
 ### *<a name="1">Ответ к Заданию 1</a>*
 
+Создала 6 машин с помощью [terraform](terraform/main.tf)
 
-Устанавливаем зависимости для apt:
+Установила kubernetes с использованием playbook ansible
 
-```bash
-
-sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates curl
-
-```
-Настраиваем репозиторий:
+https://github.com/kubernetes-sigs/kubespray
 
 ```bash
 
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+git clone https://github.com/kubernetes-sigs/kubespray.git
+cd ./kubespray
+python3 -m pip install -r ./requirements.txt
+cp -r ./inventory/sample/ ./inventory/myinv
 
 ```
-Устанавливаем пакеты
+В файле [/home/user/kubespray/inventory/myinv/inventory.ini](inventory.ini) указала свои машины:
+
+```yaml
+# ## Configure 'ip' variable to bind kubernetes services on a
+# ## different ip than the default iface
+# ## We should set etcd_member_name for etcd cluster. The node that is not a etcd member do not need to set the value, or can set the empty string value.
+[all]
+master1 ansible_host=10.128.0.103 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+master2 ansible_host=10.128.0.10 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+master3 ansible_host=10.128.0.11 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+node1 ansible_host=10.128.0.200 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+node2 ansible_host=10.128.0.201 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+node3 ansible_host=10.128.0.202 ansible_ssh_private_key_file=/home/user/.ssh/id_rsa ansible_user=user ansible_python_interpreter=/usr/bin/python3
+
+
+[kube_control_plane]
+master1
+master2
+master3
+
+[etcd]
+master1
+master2
+master3
+
+[kube_node]
+node1
+node2
+node3
+
+
+[calico_rr]
+
+[k8s_cluster:children]
+kube_control_plane
+kube_node
+calico_rr
+
+
+```
+
+Применила playbook 
 
 ```bash
 
-sudo apt-get update
-sudo apt-get install -y kubelet kubeadm kubect
+ansible-playbook -i ./inventory/myinv/inventory.ini cluster.yml -b
 
 ```
+
+В результате где-то за полчаса без моего участия кластер kubernetes установился
+
+![ansible](img/img202212241.png)
+
+
+На машине master1 перешла под рута `sudo su`, проверила системные поды `kubectl get po -n kube-system`
+
+![kubesystem](img/img202212242.png)
+
+
+Плагин по умолчанию установился  calico.
 
 
 ---
