@@ -22,7 +22,7 @@
 
 Создала 6 машин с помощью [terraform](terraform/main.tf)
 
-Установила kubernetes с использованием playbook ansible
+Установила kubernetes с использованием  ansible-playbook
 
 https://github.com/kubernetes-sigs/kubespray
 
