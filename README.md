@@ -95,6 +95,22 @@ ansible-playbook -i ./inventory/myinv/inventory.ini cluster.yml -b
 
 Плагин по умолчанию установился  calico.
 
+Поставила [docker](docker.sh).
+
+Поставила `kubeadm`
+
+```bash
+
+# Настраиваем репозиторий:
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+
+# Устанавливаем пакет:
+sudo apt-get update
+sudo apt-get install -y kubeadm
+
+```
+
 
 ---
 
@@ -137,6 +153,26 @@ spec:
 В качестве ответа пришлите вывод команды `helm get manifest <имя_релиза>`.
 
 ### *<a name="2">Ответ к Заданию 2</a>*
+
+Установка `helm`
+
+```bash
+
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bash
+helm version
+
+```
+Добавление `repo`
+
+```bash
+
+helm repo add stable https://charts.helm.sh/stable
+helm repo list
+
+```
+
+
+
 
 
 ---
