@@ -20,23 +20,8 @@
 
 ### *<a name="1">Ответ к Заданию 1</a>*
 
-Создала 6 машин с помощью [terraform](terraform/main.tf)
+Создала 6 машин с помощью [terraform](terraform/main.tf), через который сразу поставила на машины  [docker](docker.sh), [kubeadm](kube.sh).
 
-Поставила [docker](docker.sh).
-
-Поставила `kubeadm`
-
-```bash
-
-# Настраиваем репозиторий:
-sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
-
-# Устанавливаем пакет:
-sudo apt-get update
-sudo apt-get install -y kubeadm
-
-```
 
 Установила kubernetes с использованием  ansible-playbook 
 ## `kubespray`
