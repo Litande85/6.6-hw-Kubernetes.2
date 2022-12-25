@@ -275,6 +275,48 @@ helm install chart-redis-makhota ./chart-redis-makhota/
 ![img202212255](img/img202212255.png)
 
 
+Результат команды `helm get manifest chart-redis-makhota`
+
+```bash
+
+root@master-makhota1:/home/user# helm get manifest chart-redis-makhota
+---
+# Source: chart-redis-makhota/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: chart-redis-makhota
+spec:
+  type: 
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: chart-redis-makhota
+  selector:
+    app: chart-redis-makhota
+---
+# Source: chart-redis-makhota/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chart-redis-makhota
+spec:
+  selector:
+    matchLabels:
+      app: chart-redis-makhota
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: chart-redis-makhota
+    spec:
+      containers:
+      - name: chart-redis-makhota
+        image: redis:6.0.13
+        ports:
+        - containerPort: 6379
+```
+![manifest](img/img202212258.png)
 
 ---
 ## Дополнительные задания* (со звёздочкой)
@@ -365,3 +407,55 @@ kubectl get po -o wide
 Подключилась к машине  `node-makhota3` по ssh `ssh user@10.128.0.202`, проверила обновление информации из `volume`  `cat /home/user/data/infohost `
 
 ![cat](img/img202212257.png)
+
+Результат команды `helm get manifest chart-redis-makhota2`
+
+```bash
+
+root@master-makhota1:/home/user# helm get manifest chart-redis-makhota2
+---
+# Source: chart-redis-makhota/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: chart-redis-makhota2
+spec:
+  type: 
+  ports:
+  - port: 6379
+    targetPort: 6379
+    name: chart-redis-makhota2
+  selector:
+    app: chart-redis-makhota2
+---
+# Source: chart-redis-makhota/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chart-redis-makhota2
+spec:
+  selector:
+    matchLabels:
+      app: chart-redis-makhota2
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: chart-redis-makhota2
+    spec:
+      containers:
+      - name: chart-redis-makhota2
+        image: redis:6.0.13
+        ports:
+        - containerPort: 6379
+        volumeMounts:
+        - mountPath: /home/user/data
+          name: mydir
+      volumes:
+      - name: mydir
+        hostPath:
+          # Ensure the file directory is created.
+          path: /home/user/data
+          type: DirectoryOrCreate
+
+```
