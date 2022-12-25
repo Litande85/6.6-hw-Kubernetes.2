@@ -99,6 +99,8 @@ ansible-playbook -i ./inventory/myinv/inventory.ini cluster.yml -b
 
 Плагин по умолчанию установился  calico.
 
+Проверила созданные ноды.
+
 ```bash
 kubectl get nodes
 ```
@@ -146,7 +148,7 @@ spec:
 
 ### *<a name="2">Ответ к Заданию 2</a>*
 
-Установка `helm`
+Установила `helm`
 
 ```bash
 
@@ -154,7 +156,7 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 | bas
 helm version
 
 ```
-Добавление `repo`
+Добавила `repo`
 
 ```bash
 
@@ -164,7 +166,7 @@ helm repo list
 ```
 
 
-Создание чарта
+Создала структуру чарта
 
 ```bash
 mkdir chart-redis-makhota
@@ -175,7 +177,7 @@ touch ./templates/service.yaml
 touch values.yaml
 touch Chart.yaml
 ```
-Вносим данные в файлы
+Внесла данные в файлы
 
 [chart-redis-makhota/Chart.yaml](chart-redis-makhota/Chart.yaml)
 
@@ -254,7 +256,7 @@ spec:
 
 ```
 
-Устанавливаем чат
+Установила чат
 
 ```bash
 
@@ -262,7 +264,7 @@ helm install chart-redis-makhota ./chart-redis-makhota/
 
 ```
 
-Проверяем список чатов и работу подов
+Проверила список чатов и работу подов
 
 
 ![img202212252](img/img202212252.png)
@@ -292,7 +294,7 @@ helm install chart-redis-makhota ./chart-redis-makhota/
 
 ### *<a name="3">Ответ к Заданию 3*</a>*
 
-Деинсталлируем чат `chart-redis-makhota`
+Деинсталлировала чат из второго задания `chart-redis-makhota`
 
 ```bash
 
@@ -300,9 +302,9 @@ helm uninstall chart-redis-makhota
 
 ```
 
-Копируем файлы из директории `chart-redis-makhota` в директорию `chart-redis-makhota2`
+Скопировала файлы из директории `chart-redis-makhota` в директорию `chart-redis-makhota2`
 
-Изменяем [chart-redis-makhota2/values.yaml](chart-redis-makhota2/values.yaml)
+Изменила [chart-redis-makhota2/values.yaml](chart-redis-makhota2/values.yaml)
 
 ```yaml
 
@@ -324,7 +326,7 @@ volumehostPath: /home/user/data
 
 ```
 
-Дополняем [chart-redis-makhota2/templates/deployment.yaml](chart-redis-makhota2/templates/deployment.yaml) следующими строками для монтирования `volume`
+Дополнила [chart-redis-makhota2/templates/deployment.yaml](chart-redis-makhota2/templates/deployment.yaml) следующими строками для монтирования `volume`
 
 ```yaml
 
@@ -340,7 +342,7 @@ volumehostPath: /home/user/data
 
 ```
 
-Устанавливаем чат `chart-redis-makhota2`
+Установила чат `chart-redis-makhota2`
 
 ```bash
 
@@ -348,7 +350,7 @@ helm install chart-redis-makhota2 ./chart-redis-makhota2
 
 ```
 
-Смотрим расширенную информацию о подах, в частности на каких нодах они запустились
+Посмотрела расширенную информацию о подах, в частности на каких нодах они запустились
 
 ```bash
 
@@ -356,10 +358,10 @@ kubectl get po -o wide
 
 ```
 
-Заходим в последний под `chart-redis-makhota2-867d49c444-zhm56`, который запустился на машине `node-makhota3`, создаем в папке, примонтированной к `volume` по адресу `/home/user/data/` файл с выводом инофрмации о `hostname` пода.
+Зашла в последний под `chart-redis-makhota2-867d49c444-zhm56`, который запустился на машине `node-makhota3`, создала в папке, примонтированной к `volume` по адресу `/home/user/data/`, файл с выводом инофрмации о `hostname` пода.
 
 ![volume](img/img202212256.png)
 
-Подключаемся к машине  `node-makhota3` по ssh `ssh user@10.128.0.202` проверяем  `cat /home/user/data/infohost `
+Подключилась к машине  `node-makhota3` по ssh `ssh user@10.128.0.202`, проверила обновление информации из `volume`  `cat /home/user/data/infohost `
 
 ![cat](img/img202212257.png)
