@@ -291,3 +291,75 @@ helm install chart-redis-makhota ./chart-redis-makhota/
 
 
 ### *<a name="3">Ответ к Заданию 3*</a>*
+
+Деинсталлируем чат `chart-redis-makhota`
+
+```bash
+
+helm uninstall chart-redis-makhota
+
+```
+
+Копируем файлы из директории `chart-redis-makhota` в директорию `chart-redis-makhota2`
+
+Изменяем [chart-redis-makhota2/values.yaml](chart-redis-makhota2/values.yaml)
+
+```yaml
+
+nameApp: chart-redis-makhota2
+
+image: redis:6.0.13
+
+containerPort: 6379
+
+targetPort: 6379
+
+replicaCount: 4
+
+specType: ClusterIP
+
+volumemountPath: /home/user/data
+
+volumehostPath: /home/user/data
+
+```
+
+Дополняем [chart-redis-makhota2/templates/deployment.yaml](chart-redis-makhota2/templates/deployment.yaml) следующими строками для монтирования `volume`
+
+```yaml
+
+        volumeMounts:
+        - mountPath: {{ .Values.volumemountPath }}
+          name: mydir
+      volumes:
+      - name: mydir
+        hostPath:
+          # Ensure the file directory is created.
+          path: {{ .Values.volumehostPath }}
+          type: DirectoryOrCreate
+
+```
+
+Устанавливаем чат `chart-redis-makhota2`
+
+```bash
+
+helm install chart-redis-makhota2 ./chart-redis-makhota2
+
+```
+
+Смотрим расширенную информацию о подах, в частности на каких нодах они запустились
+
+```bash
+
+kubectl get po -o wide
+
+```
+
+Заходим в последний под `chart-redis-makhota2-867d49c444-zhm56`, который запустился на машине `node-makhota3`, создаем в папке, примонтированной к `volume` по адресу `/home/user/data/` файл с выводом инофрмации о `hostname` пода.
+
+![volume](img/img202212256.png)
+
+Подключаемся к машине  `node-makhota3` по ssh `ssh user@10.128.0.202` проверяем  `cat /home/user/data/infohost `
+
+![cat](img/img202212257.png)

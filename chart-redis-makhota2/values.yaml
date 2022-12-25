@@ -1,0 +1,15 @@
+nameApp: chart-redis-makhota2
+
+image: redis:6.0.13
+
+containerPort: 6379
+
+targetPort: 6379
+
+replicaCount: 4
+
+specType: ClusterIP
+
+volumemountPath: /home/user/data
+
+volumehostPath: /home/user/data

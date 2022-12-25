@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.nameApp }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.nameApp }}
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.nameApp }}
+    spec:
+      containers:
+      - name: {{ .Values.nameApp }}
+        image: {{ .Values.image }}
+        ports:
+        - containerPort: {{ .Values.containerPort }}
+        volumeMounts:
+        - mountPath: {{ .Values.volumemountPath }}
+          name: mydir
+      volumes:
+      - name: mydir
+        hostPath:
+          # Ensure the file directory is created.
+          path: {{ .Values.volumehostPath }}
+          type: DirectoryOrCreate
