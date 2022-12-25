@@ -1,0 +1,11 @@
+nameApp: chart-redis-makhota
+
+image: redis:6.0.13
+
+containerPort: 6379
+
+targetPort: 6379
+
+replicaCount: 3
+
+specType: ClusterIP

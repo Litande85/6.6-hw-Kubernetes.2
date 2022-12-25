@@ -59,10 +59,10 @@ resource "yandex_compute_instance" "vm" {
   # The source is the location of the bash script
   # on the local linux box you are executing terraform
   # from.  The destination is on the new  instance.
-  # provisioner "file" {
-  #   source      = "/home/user/terraform/checked-versions/kube"
-  #   destination = "/home/user/kube"
-  # }  
+  provisioner "file" {
+    source      = "/home/user/terraform/checked-versions/kube"
+    destination = "/home/user/kube"
+  }  
   
   connection {
     host = lookup(var.vm_ips, count.index) #terraform.tfvars
@@ -82,8 +82,10 @@ resource "yandex_compute_instance" "vm" {
       "sudo hostnamectl set-hostname ${var.guest_name_prefix}-vm0${count.index + 1}",
       "sudo timedatectl set-timezone Europe/Moscow",
       "sudo sed -i '$a127.0.0.1 ${var.guest_name_prefix}-vm0${count.index + 1}' /etc/hosts",
-      # "chmod +x /home/user/kube/docker.sh",
-      # "sudo /home/user/kube/docker.sh",
+      "chmod +x /home/user/kube/docker.sh",
+      "sudo /home/user/kube/docker.sh",
+      "chmod +x /home/user/kube/kube.sh",
+      "sudo /home/user/kube/kube.sh",
     ]  
   }
 }
@@ -125,10 +127,10 @@ resource "yandex_compute_instance" "makhota-server" {
   # The source is the location of the bash script
   # on the local linux box you are executing terraform
   # from.  The destination is on the new  instance.
-  # provisioner "file" {
-  #   source      = "/home/user/terraform/checked-versions/kube"
-  #   destination = "/home/user/kube"
-  # }  
+  provisioner "file" {
+    source      = "/home/user/terraform/checked-versions/kube"
+    destination = "/home/user/kube"
+  }  
   
   connection {
     host = "10.128.0.103"
@@ -148,8 +150,10 @@ resource "yandex_compute_instance" "makhota-server" {
       "sudo hostnamectl set-hostname makhota-server",
       "sudo sed -i '$a127.0.0.1 makhota-server' /etc/hosts",
       "sudo timedatectl set-timezone Europe/Moscow",
-      # "chmod +x /home/user/kube/docker.sh",
-      # "sudo /home/user/kube/docker.sh",
+      "chmod +x /home/user/kube/docker.sh",
+      "sudo /home/user/kube/docker.sh",
+      "chmod +x /home/user/kube/kube.sh",
+      "sudo /home/user/kube/kube.sh",
     ]  
   }
 }

@@ -41,14 +41,13 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-compose-plugin
 
 sudo docker run hello-world
 
-#Add user group docker
-
 
 sudo systemctl enable docker
 sudo systemctl start docker
 
-#sudo cp /home/user/kube/daemon.json /etc/docker/daemon.json
+sudo cp /home/user/kube/daemon.json /etc/docker/daemon.json
 
+#Add user group docker
 sudo usermod -aG docker user
 
 #newgrp docker
